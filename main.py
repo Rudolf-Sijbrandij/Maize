@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from random import randint
+from algoritme import dfs
 
 
 class Window:
@@ -10,9 +10,10 @@ class Window:
         self.master.geometry("620x620")
         self.master.configure(bg='#1b2838')
         self.master.iconbitmap('images/Maize.ico')
-        self.max_size = 70
-        self.min_size = 10
-        self.label_text = "Vul 2 getallen in, minimaal " + str(self.min_size) + " en maximaal " + str(self.max_size)
+        self.max_size = 71
+        self.min_size = 21
+        self.label_text = "Vul 2 oneven getallen in, minimaal "\
+                          + str(self.min_size) + " en maximaal " + str(self.max_size)
         self.rows = -1
         self.columns = -1
         self.cell_size = 8  # pixels
@@ -41,11 +42,15 @@ class Window:
             self.initial()
             return
         if self.rows > self.max_size or self.columns > self.max_size:
-            self.label_text = "Het getal mag niet groter zijn dan " + str(self.max_size)
+            self.label_text = "Het getal mag niet groter zijn dan" + str(self.max_size)
             self.initial()
             return
         elif self.rows < self.min_size or self.columns < self.min_size:
-            self.label_text = " Het getal mag niet kleiner zijn dan " + str(self.min_size)
+            self.label_text = "Het getal mag niet kleiner zijn dan" + str(self.min_size)
+            self.initial()
+            return
+        elif self.rows % 2 == 0 or self.columns % 2 == 0:
+            self.label_text = "Vul een oneven getal in"
             self.initial()
             return
         else:
@@ -63,17 +68,21 @@ class Window:
 
         for i in self.master.winfo_children():
             i.destroy()
-        width = (self.columns + 2)*self.cell_size
-        height = (self.rows + 2)*self.cell_size
+        width = (self.columns + 1)*self.cell_size
+        height = (self.rows + 1)*self.cell_size
         frame2 = Canvas(self.master, width=width, height=height, bg='#000000')
         frame2.place(relx=0.5, rely=0.5, anchor=CENTER)
-        for row in range(self.rows + 1):
-            for col in range(self.columns + 1):
-                if randint(0, 1) == 0:
+        maze = dfs(self.rows, self.columns)
+        for row in range(len(maze)):
+            for col in range(len(maze[row])):
+                if maze[row][col] == 1:
                     color = 'white'
                 else:
                     color = 'black'
                 draw(row, col, color)
+                frame2.update()
+        draw(0, 0, 'green')
+        draw(self.rows - 1, self.columns - 1, 'red')
 
 
 root = Tk()
