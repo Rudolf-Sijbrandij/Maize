@@ -18,7 +18,7 @@ class Window:
         # min_size om direct de dimensies van de maze in te vullen
 
         self.max_size = 99
-        self.min_size = 33
+        self.min_size = 11
         self.cell_size = 6  # pixel grootte van de maze cellen
         self.label_text = "Vul 2 oneven getallen in, minimaal " \
                           + str(self.min_size) + " en maximaal " + str(self.max_size)
@@ -27,6 +27,10 @@ class Window:
         self.rows = -1
         self.columns = -1
         self.draw_count = 0
+        self.maze = []
+        self.position = [0, 0]
+        self.character = Canvas(self.master)
+        self.frame4 = Canvas(self.master)
 
         # het openen van het begin window
         self.initial()
@@ -43,8 +47,8 @@ class Window:
         # maakt de frame bovenop de master window
         frame1 = Frame(self.master, width=200, height=200, bg='#1b2838')
         frame1.place(relx=0.5, rely=0.5, anchor=CENTER)
-        label = Label(frame1, text=self.label_text, bg='#1b2838', fg='#FFFFFF', font=("Arial", 15))
-        label.grid(row=0, column=0, pady=2)
+        label1 = Label(frame1, text=self.label_text, bg='#1b2838', fg='#FFFFFF', font=("Arial", 15))
+        label1.grid(row=0, column=0, pady=2)
         self.entry1 = Entry(frame1)
         self.entry1.insert(0, "Hoogte")
         self.entry1.grid(row=1, column=0, pady=2)
@@ -124,6 +128,63 @@ class Window:
         self.draw_count += 1
         return
 
+    # een paar functies die movement opvangt
+
+    def left(self, event):
+        self.move('left')
+        return
+
+    def up(self, event):
+        self.move('up')
+        return
+
+    def right(self, event):
+        self.move('right')
+        return
+
+    def down(self, event):
+        self.move('down')
+        return
+
+    def move(self, key):
+        """
+        Verplaatst de user icon op een geldig pad naarmate de gebruiker de pijltjestoetsen indrukt.
+
+        Args:
+            key (string): de naam van de ingedrukte key
+
+        Returns:
+            None
+        """
+        curx = self.position[0]
+        cury = self.position[1]
+        up = [curx - 1, cury]
+        down = [curx + 1, cury]
+        right = [curx, cury + 1]
+        left = [curx, cury - 1]
+        if key == 'left' and left[1] >= 0 and self.maze[left[0]][left[1]] == 1:
+            self.position = left
+        elif key == 'up' and up[0] >= 0 and self.maze[up[0]][up[1]] == 1:
+            self.position = up
+        elif key == 'right' and right[1] < self.columns and self.maze[right[0]][right[1]] == 1:
+            self.position = right
+        elif key == 'down' and down[0] < self.rows and self.maze[down[0]][down[1]] == 1:
+            self.position = down
+        elif key == 'right' and right == [self.rows - 1, self.columns]:
+            self.frame4.destroy()
+            self.frame4 = Canvas(self.master, width=25, height=10)
+            self.frame4.grid(pady=2)
+            label2 = Label(self.frame4, text='Gefeliciteerd!', bg='#1b2838', fg='#FFFFFF', font=("Arial", 10))
+            label2.grid(pady=2)
+        else:
+            return
+        self.character.destroy()
+        self.character = Canvas(self.master, width=self.cell_size, height=self.cell_size, bg='red',
+                                highlightthickness=0)
+        self.character.place(x=16 + self.position[1] * self.cell_size, y=16 + self.position[0] * self.cell_size,
+                             anchor=CENTER)
+        return
+
     def initiate(self, maze_type):
         # verwijderd de eerdere frame met het invullen van de dimensies
         for i in self.master.winfo_children():
@@ -135,20 +196,32 @@ class Window:
 
         # de maze frame maken
         frame2 = Canvas(self.master, width=width, height=height, bg='#000000')
-        frame2.place(relx=0.5, rely=0.5, anchor=CENTER)
+        frame2.grid(padx=8, pady=8)
 
         # de maze maken door de functie uit het andere python bestand te callen
-        maze = dfs(self.rows, self.columns, maze_type)
+        self.maze = dfs(self.rows, self.columns, maze_type)
 
         # het visueel maken van de maze met nog een begin en een eind in het groen en rood
-        self.draw_maze(maze, frame2)
+        self.draw_maze(self.maze, frame2)
         self.draw(0, -1, 'green', frame2)
         self.draw(self.rows - 1, self.columns, 'red', frame2)
 
+        # zet het character op het eerste vakje
+        self.character = Canvas(self.master, width=self.cell_size, height=self.cell_size, bg='red',
+                                highlightthickness=0)
+        self.character.place(x=16 + self.position[1] * self.cell_size, y=16 + self.position[0] * self.cell_size,
+                             anchor=CENTER)
+
+        # laat de user het character met de pijltjes toetsen bewegen
+        self.master.bind('<Left>', self.left)
+        self.master.bind('<Up>', self.up)
+        self.master.bind('<Down>', self.down)
+        self.master.bind('<Right>', self.right)
+
         # een extra frame maken voor de knop om de maze te solven
         frame3 = Canvas(self.master, width=25, height=10)
-        frame3.pack(side=TOP)
-        button1 = ttk.Button(frame3, text="Solve", command=lambda: self.solve(maze, frame2))
+        frame3.grid(pady=2)
+        button1 = ttk.Button(frame3, text="Solve", command=lambda: self.solve(self.maze, frame2))
         button1.grid(row=3, column=0, pady=2)
         return
 
