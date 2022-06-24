@@ -89,9 +89,9 @@ def dfs(rows, columns, maze_type):
     return maze
 
 
-def tremaux(maze):
+def solver(maze):
     """
-    Zoekt een pad naar het einde van de maze vanaf het begin doormiddel van het Trémaux's maze solving algorithm.
+    Zoekt een pad naar het einde van de maze vanaf het begin doormiddel van depth first search maze solving algorithm.
     Maakt gebruik van een eerder gemaakte maze van het maze generation algorithm.
 
     Args:

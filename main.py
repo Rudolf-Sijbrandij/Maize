@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from algoritmes import dfs, tremaux
+from algoritmes import dfs, solver
 
 
 class Window:
@@ -227,7 +227,7 @@ class Window:
 
     def solve(self, maze, frame):
         # het callen van de functie uit het andere python bestand om een solution te vinden voor de opgegeven maze
-        solution = tremaux(maze)
+        solution = solver(maze)
 
         # het visueel maken van een pad van begin tot eind in het blauw in de eerder gemaakte maze
         self.draw_maze(maze, frame)
