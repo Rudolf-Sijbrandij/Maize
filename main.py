@@ -176,7 +176,7 @@ class Window:
             self.frame4.destroy()
             self.frame4 = Canvas(self.master, width=25, height=10)
             self.frame4.grid(pady=2)
-            label2 = Label(self.frame4, text='Gefeliciteerd!', bg='#1b2838', fg='#FFFFFF', font=("Arial", 10))
+            label2 = Label(self.frame4, text='A-maze-ing!', bg='#1b2838', fg='#FFFFFF', font=("Arial", 10))
             label2.grid(pady=2)
         else:
             return
