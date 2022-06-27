@@ -31,6 +31,7 @@ class Window:
         self.position = [0, 0]
         self.character = Canvas(self.master)
         self.frame4 = Canvas(self.master)
+        self.label1 = Label()
 
         # het openen van het begin window
         self.initial()
@@ -47,8 +48,9 @@ class Window:
         # maakt de frame bovenop de master window
         frame1 = Frame(self.master, width=200, height=200, bg='#1b2838')
         frame1.place(relx=0.5, rely=0.5, anchor=CENTER)
-        label1 = Label(frame1, text=self.label_text, bg='#1b2838', fg='#FFFFFF', font=("Arial", 15))
-        label1.grid(row=0, column=0, pady=2)
+        self.label1.destroy()
+        self.label1 = Label(frame1, text=self.label_text, bg='#1b2838', fg='#FFFFFF', font=("Arial", 15))
+        self.label1.grid(row=0, column=0, pady=2)
         self.entry1 = Entry(frame1)
         self.entry1.insert(0, "Hoogte")
         self.entry1.grid(row=1, column=0, pady=2)
