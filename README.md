@@ -1,5 +1,7 @@
 # Maize
 
+Een maze generator met normaal en disjointed optie, een automatische solver en een character doe door de maze heen kan bewegen met de pijltjes toetsen.
+
 ## benodigdheden: 
 - random
 - tkinter
