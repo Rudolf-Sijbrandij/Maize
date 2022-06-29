@@ -65,7 +65,7 @@ class Window:
 
     def check(self, maze_type):
         try:
-            # probeerd de waardes uit entry1 en entry2, als er niks in is gevult gaat hij naar de except
+            # probeert de waardes uit entry1 en entry2, als er niks in is gevuld gaat hij naar de except
             self.rows = int(self.entry1.get())
             self.columns = int(self.entry2.get())
         except ValueError:
@@ -84,7 +84,7 @@ class Window:
             self.initial()
             return
 
-        # checked of de ingvulde getallen wel oneven zijn, als ze niet oneven zijn werkt de maze niet goed
+        # checked of de ingevulde getallen wel oneven zijn, als ze niet oneven zijn werkt de maze niet goed
         elif self.rows % 2 == 0 or self.columns % 2 == 0:
             self.label_text = "Vul een oneven getal in"
             self.initial()
@@ -96,7 +96,7 @@ class Window:
 
     def draw(self, draw_row, draw_col, draw_color, frame):
         """
-        Tekend een vierkant op de goede plaats op het opgegeven frame met de opgegeven kleur.
+        Tekent een vierkant op de goede plaats op het opgegeven frame met de opgegeven kleur.
 
         Args:
             draw_row (int): De row waarop het vierkant moet komen.
@@ -158,12 +158,12 @@ class Window:
         Returns:
             None
         """
-        curx = self.position[0]
-        cury = self.position[1]
-        up = [curx - 1, cury]
-        down = [curx + 1, cury]
-        right = [curx, cury + 1]
-        left = [curx, cury - 1]
+        curX = self.position[0]
+        curY = self.position[1]
+        up = [curX - 1, curY]
+        down = [curX + 1, curY]
+        right = [curX, curY + 1]
+        left = [curX, curY - 1]
         if key == 'left' and left[1] >= 0 and self.maze[left[0]][left[1]] == 1:
             self.position = left
         elif key == 'up' and up[0] >= 0 and self.maze[up[0]][up[1]] == 1:
@@ -220,7 +220,7 @@ class Window:
         self.master.bind('<Down>', self.down)
         self.master.bind('<Right>', self.right)
 
-        # een extra frame maken voor de knop om de maze te solven
+        # een extra frame maken voor de knop om de maze op te lossen
         frame3 = Canvas(self.master, width=25, height=10)
         frame3.grid(pady=2)
         button1 = ttk.Button(frame3, text="Solve", command=lambda: self.solve(self.maze, frame2))
