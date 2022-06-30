@@ -75,12 +75,12 @@ class Window:
 
         # checked of de ingevulde getallen te groot zijn
         if self.rows > self.max_size or self.columns > self.max_size:
-            self.label_text = "Het getal mag niet groter zijn dan" + str(self.max_size)
+            self.label_text = "Het getal mag niet groter zijn dan " + str(self.max_size)
             self.initial()
             return
         # checked of de ingevulde getallen te klein zijn
         elif self.rows < self.min_size or self.columns < self.min_size:
-            self.label_text = "Het getal mag niet kleiner zijn dan" + str(self.min_size)
+            self.label_text = "Het getal mag niet kleiner zijn dan " + str(self.min_size)
             self.initial()
             return
 
